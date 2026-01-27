@@ -4,16 +4,13 @@ import 'dart:io';
 import 'package:eturnserver/battle.dart';
 import 'package:eturnserver/models/lobby.dart';
 import 'package:eturnserver/models/player.dart';
+import 'package:supabase/supabase.dart';
 
-Future<int> startServer() async {
+Future<int> startServer(SupabaseClient sb) async {
+  var answer = await sb.from('ships').select('*');
+  print(answer);
 
   final server = await HttpServer.bind('0.0.0.0', 8080);
-  //final battle = BattleSession('battle-1');
-
-  //battle.addShip(Ship(id: 'ship1', teamId: 'A'));
-  //battle.addShip(Ship(id: 'ship2', teamId: 'B'));
-
-  //startBattleLoop(battle);
 
   await for (HttpRequest req in server) {
     if (WebSocketTransformer.isUpgradeRequest(req)) {
