@@ -5,8 +5,8 @@ import 'package:eturnserver/battle.dart';
 import 'package:eturnserver/functions/dbloading.dart';
 import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/globals.dart';
+import 'package:eturnserver/handles/categories/connection.dart';
 import 'package:eturnserver/models/lobby.dart';
-import 'package:eturnserver/models/player.dart';
 
 Future<int> startServer() async {
   
@@ -17,26 +17,26 @@ Future<int> startServer() async {
   printD('Start HttpServer...');
   final server = await HttpServer.bind('0.0.0.0', 8080);
 
-  printD('Listening for data.......');
+  printD('Listening for requests.......');
   await for (HttpRequest req in server) {
+    printD('incoming request from ${req.connectionInfo!.remoteAddress.address}:${req.connectionInfo!.remotePort}');
+    printD('Checks whether the request is a valid WebSocket upgrade request?');
     if (WebSocketTransformer.isUpgradeRequest(req)) {
       final socket = await WebSocketTransformer.upgrade(req);
+      printD('True. Socket: ${socket.toString()}');
 
       final lobby = Lobby('lobby-1');
+      printD('Start listening for data from this socket...');
       socket.listen((data) {
+        printD('recieved:\n${data.toString()}');
         try {
           
           final json = jsonDecode(data);
-          print(data);
-
-          switch (json['type']) {
-            case 'join_lobby':
-              lobby.addPlayer(
-                Player(
-                  id: json['playerId'],
-                  socket: socket,
-                ),
-              );
+          final category = json['category'].toString();
+          switch (category) {
+            case 'connection':
+              printD('handle category $category');
+              handleConnect(json, socket);
               break;
 
             case 'select_team':
