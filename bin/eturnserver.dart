@@ -1,17 +1,15 @@
+import 'package:dart_dotenv/dart_dotenv.dart';
 import 'package:eturnserver/eturnserver.dart' as eturnserver;
 import 'package:supabase/supabase.dart';
 
-void main(List<String> arguments) {
+
+void main(List<String> arguments) async {
   print('[${DateTime.now()}] Starting server...');
-  try {
-    var sbClient = SupabaseClient(
-      'https://vohfzpwxwoeamiwvxqgi.supabase.co',
-      $sbkey,
-    );
-    sbClient.from('ships').select('*').then(print);
-    sbClient.dispose();
-  } catch (e) {
-    print(e);
-  }
-  //eturnserver.startServer(sbClient);
+  //await dotenv.load(fileName: "secrets.env");
+  final dotEnv = DotEnv();
+  print(dotEnv.exists());
+  final key = dotEnv.getDotEnv()['key'];
+  final url = dotEnv.getDotEnv()['url'];
+  final sb = SupabaseClient(url!, key!);
+  eturnserver.startServer(sb);
 }

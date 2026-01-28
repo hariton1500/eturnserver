@@ -1,14 +1,26 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:eturnserver/battle.dart';
+import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/models/lobby.dart';
 import 'package:eturnserver/models/player.dart';
 import 'package:supabase/supabase.dart';
 
 Future<int> startServer(SupabaseClient sb) async {
-  var answer = await sb.from('ships').select('*');
-  print(answer);
+  
+  //loading data from db
+  printD('Loading from DB');
+  List<Map<String, dynamic>> fractions = await sb.from('fractions').select();
+  List<Map<String, dynamic>> shipTypes = await sb.from('ship_types').select();
+  List<Map<String, dynamic>> ships = await sb.from('ships').select();
+  printD('Data loaded.');
+
+
+
+  sb.dispose();
+  return 0;
 
   final server = await HttpServer.bind('0.0.0.0', 8080);
 
