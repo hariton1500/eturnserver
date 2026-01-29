@@ -6,6 +6,7 @@ import 'package:eturnserver/functions/dbloading.dart';
 import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/globals.dart';
 import 'package:eturnserver/handles/categories/connection.dart';
+import 'package:eturnserver/handles/categories/station.dart';
 import 'package:eturnserver/models/lobby.dart';
 
 Future<int> startServer() async {
@@ -33,14 +34,15 @@ Future<int> startServer() async {
           
           final json = jsonDecode(data);
           final category = json['category'].toString();
+          printD('handle category $category');
           switch (category) {
             case 'connection':
-              printD('handle category $category');
               handleConnect(json, socket);
               break;
 
-            case 'select_team':
-              lobby.setTeam(json['playerId'], json['teamId']);
+            case 'station':
+              var player = players.firstWhere((p) => p.socket == socket);
+              handleStation(json, player);
               break;
 
             case 'ready':
