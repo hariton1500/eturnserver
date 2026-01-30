@@ -16,7 +16,7 @@ class BattleSession {
   BattleSession(this.id);
 
   void addShip(Ship ship) {
-    ships[ship.id] = ship;
+    //ships[ship.id] = ship;
   }
 
   void addCommand(Command command) {

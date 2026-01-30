@@ -18,24 +18,25 @@ void handleConnect(Map<String, dynamic> json, WebSocket s) {
       printD('authenticating...');
       final String email = json['email'];
       final result = authentication(email, json['password']);
-      if (result) {
+      if (result.isNotEmpty) {
         printD('success.');
-        Player player = Player(id: email, socket: s);
+        Player player = Player(id: result['id'], socket: s);
         if (!players.any((p) => p.id == email)) players.add(player);
         printD('added player $player to active');
         printD('List of active players:\n$players');
+        answer['player'] = {'id': player.id};
       } else {
         printD('failed');
       }
       //sending answer
-      answer['result'] = result;
+      answer['result'] = result.isNotEmpty;
       printD('sending:\n$answer');
       s.add(jsonEncode(answer));
       break;
     case 'logout':
       final String email = json['email'];
       printD('player $email logged out');
-      players.removeWhere((p) => p.id == email);
+      //players.removeWhere((p) => p.id == email);
       break;
     default:
   }

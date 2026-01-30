@@ -1,7 +1,7 @@
 enum ShipState { alive, dead }
 
 class Ship {
-  final String id;
+  final int id;
   final String teamId;
 
   int hp;

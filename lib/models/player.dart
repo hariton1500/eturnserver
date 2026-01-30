@@ -8,7 +8,7 @@ enum Categories {
 }
 
 class Player {
-  final String id;
+  final int id;
   final WebSocket socket;
 
   Categories category = Categories.justLoggedIn; 

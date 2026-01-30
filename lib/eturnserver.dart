@@ -44,21 +44,6 @@ Future<int> startServer() async {
               var player = players.firstWhere((p) => p.socket == socket);
               handleStation(json, player);
               break;
-
-            case 'ready':
-              lobby.setReady(json['playerId'], json['value']);
-              break;
-
-            case 'auto_teams':
-              autoAssignTeams(lobby);
-              break;
-
-            case 'start_battle':
-              if (lobby.allReady) {
-                final battle = startBattleFromLobby(lobby);
-                startBattleLoop(battle);
-              }
-              break;
           }
 
           broadcastLobbyState(lobby);
@@ -83,14 +68,6 @@ Future<int> startServer() async {
       });
     }
   }
-
-
-
-
-
-
-
-
 
   return 0;
 }

@@ -10,7 +10,7 @@ class Lobby {
 
   void addPlayer(Player player) {
     if (locked) return;
-    players[player.id] = player;
+    //players[player.id] = player.id;
   }
 
   void removePlayer(String playerId) {

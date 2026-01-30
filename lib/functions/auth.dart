@@ -1,5 +1,8 @@
+import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/globals.dart';
 
-bool authentication(String email, password) {
-  return registeredUsers.firstWhere((element) => element['email'] == email && element['password'] == password,).isNotEmpty;
+Map<String, dynamic> authentication(String email, password) {
+  printD('auth for $email and $password from \n$registeredUsers');
+  var player = registeredUsers.firstWhere((element) => element['email'] == email && element['password'] == password, orElse: () => {});
+  return player;
 }
