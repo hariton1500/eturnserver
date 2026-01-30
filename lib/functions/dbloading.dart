@@ -10,6 +10,7 @@ Future<bool> loadingFromDB() async {
     List<Map<String, dynamic>> icons = await sb!.from('icons').select();
     List<Map<String, dynamic>> moduleGroups = await sb!.from('module_groups').select();
     List<Map<String, dynamic>> modules = await sb!.from('modules').select();
+    registeredUsers = await sb!.from('players').select();
     printD('Data loaded.');
     return true;
   } else {

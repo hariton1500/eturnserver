@@ -76,7 +76,7 @@ Future<int> startServer() async {
           if (json['type'] == 'pause') {
             battle.paused = json['value'];
           }*/
-          print(json);
+          //print(json);
         } catch (e) {
           print(e);
         }
