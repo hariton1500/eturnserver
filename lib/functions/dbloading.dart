@@ -6,10 +6,10 @@ Future<bool> loadingFromDB() async {
   if (sb != null) {
     List<Map<String, dynamic>> fractions = await sb!.from('fractions').select();
     printD('Loaded fractions:\n$fractions');
-    List<Map<String, dynamic>> shipTypes = await sb!.from('ship_types').select();
-    printD('Loaded shipTypes:\n$shipTypes');
-    List<Map<String, dynamic>> ships = await sb!.from('ships').select();
-    printD('Loaded ships:\n$ships');
+    shipClasses = await sb!.from('ship_classes').select();
+    printD('Loaded shipTypes:\n$shipClasses');
+    shipsDB = await sb!.from('ships').select();
+    printD('Loaded ships:\n$shipsDB');
     List<Map<String, dynamic>> icons = await sb!.from('icons').select();
     printD('Loaded icons:\n$icons');
     List<Map<String, dynamic>> moduleGroups = await sb!.from('module_groups').select();

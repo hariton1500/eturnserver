@@ -6,6 +6,7 @@ import 'package:eturnserver/functions/dbloading.dart';
 import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/globals.dart';
 import 'package:eturnserver/handles/categories/connection.dart';
+import 'package:eturnserver/handles/categories/lobby.dart';
 import 'package:eturnserver/handles/categories/station.dart';
 import 'package:eturnserver/models/lobby.dart';
 
@@ -43,6 +44,11 @@ Future<int> startServer() async {
             case 'station':
               var player = players.firstWhere((p) => p.socket == socket);
               handleStation(json, player);
+              break;
+
+            case 'lobby':
+              var player = players.firstWhere((p) => p.socket == socket);
+              handleLobby(json, player);
               break;
           }
 
