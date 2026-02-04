@@ -5,7 +5,8 @@ import 'package:eturnserver/globals.dart';
 enum Categories {
   justLoggedIn,
   station,
-  lobby
+  lobby,
+  tournamentroom
 }
 
 class Player {

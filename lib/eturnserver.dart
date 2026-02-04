@@ -8,6 +8,7 @@ import 'package:eturnserver/globals.dart';
 import 'package:eturnserver/handles/categories/connection.dart';
 import 'package:eturnserver/handles/categories/lobby.dart';
 import 'package:eturnserver/handles/categories/station.dart';
+import 'package:eturnserver/handles/categories/tournamentroom.dart';
 import 'package:eturnserver/models/lobby.dart';
 
 Future<int> startServer() async {
@@ -49,6 +50,11 @@ Future<int> startServer() async {
             case 'lobby':
               var player = players.firstWhere((p) => p.socket == socket);
               handleLobby(json, player);
+              break;
+
+            case 'tournament_room':
+              var player = players.firstWhere((p) => p.socket == socket);
+              handleTournamentRoom(json, player);
               break;
           }
 
