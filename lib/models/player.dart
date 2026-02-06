@@ -1,12 +1,13 @@
 import 'dart:io';
-
+import 'package:vector_math/vector_math.dart';
 import 'package:eturnserver/globals.dart';
 
 enum Categories {
   justLoggedIn,
   station,
   lobby,
-  tournamentroom
+  tournamentroom,
+  inBattle
 }
 
 class Player {
@@ -14,10 +15,11 @@ class Player {
   final WebSocket socket;
 
   Categories category = Categories.justLoggedIn; 
-  String? teamId;
+  int? team;
   bool ready = false;
   Map<String, dynamic> playerProgress = {};
   int? activeShipId;
+  Vector2? pos;
 
   Player({
     required this.id,
@@ -29,7 +31,8 @@ class Player {
     var shipClass = shipClasses.firstWhere((shipClass) => shipClass['id'] == shipDB['class_id']);
     return {
       'ship_DB': shipDB,
-      'ship_class': shipClass
+      'ship_class': shipClass,
+      'ship': {'id': id, 'pos': {'x': pos?.x, 'y': pos?.y}, 'team': team}
     };
   }
 

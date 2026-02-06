@@ -1,3 +1,4 @@
+import 'package:eturnserver/models/battle.dart';
 import 'package:eturnserver/models/player.dart';
 import 'package:supabase/supabase.dart';
 
@@ -11,4 +12,5 @@ List<Player> players = [];
 //
 List<Map<String, dynamic>> shipsDB = [], shipClasses = [];
 
-//
+//active battles;
+List<Battle> battles = [];

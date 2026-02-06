@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:eturnserver/battle.dart';
+import 'package:eturnserver/battlesession.dart';
 import 'package:eturnserver/functions/dbloading.dart';
 import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/globals.dart';
@@ -9,13 +10,18 @@ import 'package:eturnserver/handles/categories/connection.dart';
 import 'package:eturnserver/handles/categories/lobby.dart';
 import 'package:eturnserver/handles/categories/station.dart';
 import 'package:eturnserver/handles/categories/tournamentroom.dart';
+import 'package:eturnserver/models/battle.dart';
 import 'package:eturnserver/models/lobby.dart';
+import 'package:eturnserver/models/player.dart';
 
 Future<int> startServer() async {
   
   //loading data from db
   bool res = await loadingFromDB();
   if (res) sb!.dispose();
+
+  printD('Starting random battle starter...');
+  Timer.periodic(Duration(seconds: 1), (Timer randomRunnerTickTimer) {randomBattleRunnerTick();});
 
   printD('Start HttpServer...');
   final server = await HttpServer.bind('0.0.0.0', 8080);
@@ -82,4 +88,16 @@ Future<int> startServer() async {
   }
 
   return 0;
+}
+
+void randomBattleRunnerTick() {
+  //check for lobby state to run battle
+  //1. >= then 2 players
+  final playersInLobby = players.where((p) => p.category == Categories.lobby).toList();
+  if (playersInLobby.length >= 2) {
+    //creating Battle
+    int lastBattleId = 0;
+    if (battles.isNotEmpty) lastBattleId = battles.last.id;
+    battles.add(Battle(lastBattleId + 1, participants: playersInLobby));
+  }
 }

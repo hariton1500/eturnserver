@@ -19,7 +19,7 @@ class Lobby {
 
   void setTeam(String playerId, String teamId) {
     if (locked) return;
-    players[playerId]?.teamId = teamId;
+    players[playerId]?.team = 0;
   }
 
   void setReady(String playerId, bool value) {
@@ -28,17 +28,17 @@ class Lobby {
 
   bool get allReady =>
       players.isNotEmpty &&
-      players.values.every((p) => p.ready && p.teamId != null);
+      players.values.every((p) => p.ready && p.team != null);
 }
 
 void autoAssignTeams(Lobby lobby) {
-  final teamA = 'A';
-  final teamB = 'B';
+  final teamA = -1;
+  final teamB = 1;
 
   int toggle = 0;
 
   for (final player in lobby.players.values) {
-    player.teamId = toggle % 2 == 0 ? teamA : teamB;
+    player.team = toggle % 2 == 0 ? -1 : 1;
     toggle++;
   }
 }

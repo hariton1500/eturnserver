@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:eturnserver/commands.dart';
+import 'package:eturnserver/models/commands.dart';
 import 'package:eturnserver/models/lobby.dart';
 import 'package:eturnserver/models/ship.dart';
 
@@ -76,7 +76,7 @@ void broadcastLobbyState(Lobby lobby) {
     'locked': lobby.locked,
     'players': lobby.players.values.map((p) => {
       'id': p.id,
-      'team': p.teamId,
+      'team': p.team,
       'ready': p.ready,
     }).toList(),
   };
@@ -95,7 +95,7 @@ BattleSession startBattleFromLobby(Lobby lobby) {
     battle.addShip(
       Ship(
         id: player.id,
-        teamId: player.teamId!,
+        teamId: ''
       ),
     );
   }

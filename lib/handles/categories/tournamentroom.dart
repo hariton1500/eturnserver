@@ -6,7 +6,7 @@ import 'package:eturnserver/models/player.dart';
 
 void handleTournamentRoom(Map<String, dynamic> json, Player player) {
   Map<String, dynamic> answer = {
-    'category': 'lobby',
+    'category': 'tournament',
   };
   final String type = json['type'];
   printD('type: $type');
