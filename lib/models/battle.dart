@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
-
+import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/models/commands.dart';
 import 'package:eturnserver/models/player.dart';
 import 'package:eturnserver/models/ship.dart';
@@ -19,15 +18,13 @@ class Battle {
       participant.category = Categories.inBattle;
       participant.team = participants.indexOf(participant).isOdd ? -1 : 1;
       participant.pos = Vector2(participant.team! * 50000, participants.indexOf(participant) * 100);
-      participant.socket.add(jsonEncode({
+      final Map<String, dynamic> dataToSend = {
         'category': 'battle',
         'type': 'start',
-        'data': {
-          //'team': participant.team,
-          //'pos': {'x': participant.pos?.x, 'y': participant.pos?.y},
-          'ships': participants.map((p) => p.toMap()).toList()
-        }
-      }));
+        'data': {participants.map((p) => p.toMap()).toList()}
+      };
+      printD('Sending to $participant:\n$dataToSend');
+      participant.socket.add(jsonEncode(dataToSend));
     }
   }
 
