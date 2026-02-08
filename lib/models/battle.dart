@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
+import 'package:eturnserver/functions/funcs.dart';
 import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/models/commands.dart';
 import 'package:eturnserver/models/player.dart';
@@ -12,6 +14,7 @@ class Battle {
   final List<Command> commandsQueue = [];
   final Map<int, Ship> shipsMap = {}; //key = Player.id, value = Ship
   late final Timer runTimer;
+  final dt = Duration(milliseconds: 1000);
 
   Battle(this.id, {required this.participants}) {
     printD('Creating new battle...');
@@ -31,18 +34,27 @@ class Battle {
 
 
   void run() {
-    Timer.periodic(Duration(milliseconds: 1000), (runTimer) {
+    Timer.periodic(dt, (runTimer) {
       tick();
     });
   }
 
   
   void tick() {
-    _executeCommand();
+    _executeCommands();
     _broadcastState();
   }
   
-  void _executeCommand() {}
+  void _executeCommands() {
+    for (var command in commandsQueue) {
+      switch (command.type) {
+        case CommandType.moveTo:
+          updateShipState(shipsMap[command.shipId]!..targetPoint = command.targetPoint);
+          break;
+        default:
+      }
+    }
+  }
   
   void _broadcastState() {
     for (var player in participants) {
@@ -59,5 +71,31 @@ class Battle {
 
   void addCommand(Command command) {
     commandsQueue.add(command);
+  }
+  
+  void updateShipState(Ship ship) {
+    var serverTick = dt.inMilliseconds / 1000;
+    if (ship.targetPoint == null) return;
+    final toTarget = ship.targetPoint! - ship.position;
+    //final distance = toTarget.length;
+
+    // ===== ПОВОРОТ =====
+    final desiredAngle = atan2(toTarget.y, toTarget.x);
+    final delta = shortestAngle(ship.angle, desiredAngle);
+
+    ship.angle += delta.clamp(
+      -ship.turnRate * serverTick,
+      ship.turnRate * serverTick,
+    );
+
+    final forward = Vector2(cos(ship.angle), sin(ship.angle));
+    ship.velocity += forward * ship.acceleration * serverTick;
+
+    if (ship.velocity.length > ship.maxSpeed) {
+      ship.velocity.scale(ship.maxSpeed);
+    }
+
+    ship.position += ship.velocity * serverTick;
+
   }
 }

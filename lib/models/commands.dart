@@ -1,16 +1,17 @@
+import 'package:vector_math/vector_math.dart';
+
 enum CommandType {
-  attack,
+  moveTo,
   hold,
 }
 
 class Command {
-  final String shipId;
+  final int shipId;
   final CommandType type;
-  final String? targetId;
+  Vector2? targetPoint;
 
   Command({
     required this.shipId,
     required this.type,
-    this.targetId,
   });
 }

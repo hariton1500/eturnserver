@@ -38,8 +38,8 @@ class BattleSession {
     final ship = ships[command.shipId];
     if (ship == null || ship.state == ShipState.dead) return;
 
-    if (command.type == CommandType.attack) {
-      final target = ships[command.targetId];
+    if (command.type == CommandType.moveTo) {
+      final target = ships[command.targetPoint];
       if (target == null || target.state == ShipState.dead) return;
 
       target.hp -= 20;
