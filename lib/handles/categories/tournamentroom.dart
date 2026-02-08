@@ -27,6 +27,7 @@ void handleTournamentRoom(Map<String, dynamic> json, Player player) {
       player.ready = !player.ready;
       answer['type'] = 'change_ready';
       var playersInTournamentRoom = players.where((p) => p.category == Categories.tournamentroom).map((element) => element.toMap()).toList();
+      printD('list of players in TournamentRoom:\n$playersInTournamentRoom');
       answer['data'] = {'change_ready': player.ready, 'player_id': player.id};
       for (var pl in players.where((p) => p.category == Categories.tournamentroom)) {
         pl.socket.add(jsonEncode(answer));

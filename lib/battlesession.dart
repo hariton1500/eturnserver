@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:eturnserver/functions/printing.dart';
 import 'package:eturnserver/models/commands.dart';
 import 'package:eturnserver/models/lobby.dart';
 import 'package:eturnserver/models/ship.dart';
@@ -66,6 +67,7 @@ void broadcastBattleState(BattleSession battle) {
       'state': s.state.name,
     }).toList(),
   };
+  printD(state.toString());
 
   // здесь отправка всем клиентам
 }

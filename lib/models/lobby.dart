@@ -38,7 +38,7 @@ void autoAssignTeams(Lobby lobby) {
   int toggle = 0;
 
   for (final player in lobby.players.values) {
-    player.team = toggle % 2 == 0 ? -1 : 1;
+    player.team = toggle % 2 == 0 ? teamA : teamB;
     toggle++;
   }
 }

@@ -11,6 +11,7 @@ class Battle {
   final List<Player> participants;
   final List<Command> commandsQueue = [];
   final Map<int, Ship> shipsMap = {}; //key = Player.id, value = Ship
+  late final Timer runTimer;
 
   Battle(this.id, {required this.participants}) {
     run();
@@ -30,7 +31,9 @@ class Battle {
 
 
   void run() {
-    Timer.periodic(Duration(milliseconds: 1000), (_) {tick();});
+    Timer.periodic(Duration(milliseconds: 1000), (runTimer) {
+      tick();
+    });
   }
 
   

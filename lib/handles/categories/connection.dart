@@ -21,7 +21,8 @@ void handleConnect(Map<String, dynamic> json, WebSocket s) {
       if (result.isNotEmpty) {
         printD('success.');
         Player player = Player(id: result['id'], socket: s);
-        if (!players.any((p) => p.id == email)) players.add(player);
+        player.email = email;
+        if (!players.any((p) => p.email == email)) players.add(player);
         printD('added player $player to active');
         printD('List of active players:\n$players');
         answer['player'] = {'id': player.id};

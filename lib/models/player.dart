@@ -20,6 +20,7 @@ class Player {
   Map<String, dynamic> playerProgress = {};
   int? activeShipId;
   Vector2? pos;
+  String? email;
 
   Player({
     required this.id,
