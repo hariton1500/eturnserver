@@ -14,19 +14,19 @@ class Battle {
   late final Timer runTimer;
 
   Battle(this.id, {required this.participants}) {
-    run();
-    for (var participant in participants) {
-      participant.category = Categories.inBattle;
-      participant.team = participants.indexOf(participant).isOdd ? -1 : 1;
-      participant.pos = Vector2(participant.team! * 50000, participants.indexOf(participant) * 100);
-      final Map<String, dynamic> dataToSend = {
+    printD('Creating new battle...');
+    int c = -1;
+    for (var player in participants) {
+      player.category = Categories.inBattle;
+      player.team = c;
+      player.pos = Vector2(c * 50000, c * 100);
+      c *= -1;
+      player.socket.add(jsonEncode({
         'category': 'battle',
-        'type': 'start',
-        'data': {participants.map((p) => p.toMap()).toList()}
-      };
-      printD('Sending to $participant:\n$dataToSend');
-      participant.socket.add(jsonEncode(dataToSend));
+        'type': 'start'
+      }));
     }
+    run();
   }
 
 
@@ -44,7 +44,18 @@ class Battle {
   
   void _executeCommand() {}
   
-  void _broadcastState() {}
+  void _broadcastState() {
+    for (var player in participants) {
+      player.category = Categories.inBattle;
+      final Map<String, dynamic> dataToSend = {
+        'category': 'battle',
+        'type': 'state',
+        'data': participants.map((p) => p.toMap()).toList()
+      };
+      printD('Sending to $player:\n$dataToSend');
+      player.socket.add(jsonEncode(dataToSend));
+    }
+  }
 
   void addCommand(Command command) {
     commandsQueue.add(command);
