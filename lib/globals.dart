@@ -10,7 +10,7 @@ List<Map<String, dynamic>> registeredUsers = [];
 List<Player> players = [];
 
 //
-List<Map<String, dynamic>> shipsDB = [], shipClasses = [];
+List<Map<String, dynamic>> shipsDB = [], shipClasses = [], playersShips = [], playersFits = [], modules = [];
 
 //active battles;
 List<Battle> battles = [];

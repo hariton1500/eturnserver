@@ -14,11 +14,20 @@ Future<bool> loadingFromDB() async {
     printD('Loaded icons:\n$icons');
     List<Map<String, dynamic>> moduleGroups = await sb!.from('module_groups').select();
     printD('Loaded moduleGroups:\n$moduleGroups');
-    List<Map<String, dynamic>> modules = await sb!.from('modules').select();
+    modules = await sb!.from('modules').select();
     printD('Loaded modules:\n$modules');
     registeredUsers = await sb!.from('players').select();
     printD('Loaded registeredUsers:\n$registeredUsers');
-    printD('Data loaded.');
+    playersShips = await sb!.from('players_ships').select();
+    printD('Loaded players ships:\n$playersShips');
+    sb!.from('players_ships').stream(primaryKey: ['id']).listen((List<Map<String, dynamic>> data) {
+      playersShips = data;
+    });
+    playersFits = await sb!.from('players_fits').select();
+    printD('Loaded players fits:\n$playersFits');
+    sb!.from('players_fits').stream(primaryKey: ['id']).listen((List<Map<String, dynamic>> data) {
+      playersFits = data;
+    });
     return true;
   } else {
     printD('error loading, no connection to DB');

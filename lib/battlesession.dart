@@ -46,7 +46,7 @@ class BattleSession {
 
       if (target.hp <= 0) {
         target.state = ShipState.dead;
-        _addScore(ship.teamId);
+        //_addScore(ship.teamId);
       }
     }
   }
@@ -97,7 +97,7 @@ BattleSession startBattleFromLobby(Lobby lobby) {
     battle.addShip(
       Ship(
         id: player.id,
-        teamId: ''
+        //teamId: ''
       ),
     );
   }

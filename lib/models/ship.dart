@@ -4,7 +4,8 @@ enum ShipState { alive, dead }
 
 class Ship {
   final int id;
-  final String teamId;
+  
+  String? teamId;
   Vector2? targetPoint;
   Vector2 position = Vector2.zero();
   double angle = 0, turnRate = 0, acceleration = 0, maxSpeed = 0;
@@ -17,7 +18,6 @@ class Ship {
 
   Ship({
     required this.id,
-    required this.teamId,
     this.hp = 100,
   });
 }

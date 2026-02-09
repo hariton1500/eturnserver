@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:eturnserver/functions/funcs.dart';
 import 'package:eturnserver/functions/printing.dart';
+import 'package:eturnserver/globals.dart';
 import 'package:eturnserver/models/commands.dart';
 import 'package:eturnserver/models/player.dart';
 import 'package:eturnserver/models/ship.dart';
@@ -12,7 +13,7 @@ class Battle {
   final int id;
   final List<Player> participants;
   final List<Command> commandsQueue = [];
-  final Map<int, Ship> shipsMap = {}; //key = Player.id, value = Ship
+  final Map<int, Map<String, dynamic>> shipsMap = {}; //key = Player.id, value = ship
   late final Timer runTimer;
   final dt = Duration(milliseconds: 1000);
 
@@ -28,6 +29,14 @@ class Battle {
         'category': 'battle',
         'type': 'start'
       }));
+      //add players ship to shipsMap
+      //Ship ship = Ship(id: id);
+      Map<String, dynamic> playersShip = playersShips.firstWhere((s) => s['id'] == player.activeShipId);
+      Map<String, dynamic> playersFit = playersFits.firstWhere((f) => f['players_ship_id'] == playersShip['id']);
+      Map<String, dynamic> shipDB = shipsDB.firstWhere((s) => s['id'] == playersShip['ship_id']);
+      Map<String, dynamic> ship = {'players_ship': playersShip, 'players_fit': playersFit, 'ship_DB': shipDB};
+      calculateShip(ship);
+      shipsMap[player.id] = ship;
     }
     run();
   }
@@ -49,7 +58,7 @@ class Battle {
     for (var command in commandsQueue) {
       switch (command.type) {
         case CommandType.moveTo:
-          updateShipState(shipsMap[command.shipId]!..targetPoint = command.targetPoint);
+          //updateShipState(shipsMap[command.shipId]['targetPoint'] = command.targetPoint);
           break;
         default:
       }
